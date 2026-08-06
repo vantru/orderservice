@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Wed Jul 08 21:04:48 ICT 2026
+kafka-clients-4.2.1-sources.jar>central=
+kafka-clients-4.2.1.jar>central=
+kafka-clients-4.2.1.pom>central=

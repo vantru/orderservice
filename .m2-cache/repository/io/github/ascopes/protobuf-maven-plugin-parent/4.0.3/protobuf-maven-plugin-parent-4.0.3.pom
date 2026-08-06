@@ -1,0 +1,824 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2023 - 2025, Ashley Scopes.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.github.ascopes</groupId>
+  <artifactId>protobuf-maven-plugin-parent</artifactId>
+  <version>4.0.3</version>
+
+  <name>Protobuf Maven Plugin Parent</name>
+  <description>Parent POM for the Protobuf Maven Plugin.</description>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>protobuf-maven-plugin</module>
+    <!-- Integration tests within the protobuf-maven-plugin module will also be derived
+         from this parent POM, but are not explicitly listed as modules directly. -->
+  </modules>
+
+  <inceptionYear>2023</inceptionYear>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://raw.githubusercontent.com/ascopes/protobuf-maven-plugin/main/LICENSE.txt</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>ascopes</id>
+      <name>Ashley Scopes</name>
+      <email>73482956+ascopes@users.noreply.github.com</email>
+      <url>https://github.com/ascopes</url>
+      <organization>Ashley Scopes</organization>
+      <organizationUrl>https://github.com/ascopes</organizationUrl>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>Europe/London</timezone>
+    </developer>
+  </developers>
+
+  <contributors />
+
+  <distributionManagement>
+    <repository>
+      <id>central</id>
+      <name>Maven Central</name>
+      <url>https://central.sonatype.com</url>
+    </repository>
+  </distributionManagement>
+
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/ascopes/protobuf-maven-plugin/issues</url>
+  </issueManagement>
+
+  <organization>
+    <name>Ashley Scopes (GitHub)</name>
+    <url>https://github.com/ascopes</url>
+  </organization>
+
+  <url>https://github.com/ascopes/protobuf-maven-plugin</url>
+
+  <scm>
+    <url>https://github.com/ascopes/protobuf-maven-plugin</url>
+    <connection>scm:git:https://github.com/ascopes/protobuf-maven-plugin</connection>
+    <developerConnection>scm:git:https://github.com/ascopes/protobuf-maven-plugin</developerConnection>
+    <tag>v4.0.3</tag>
+  </scm>
+
+  <properties>
+    <!-- Dependencies -->
+    <assertj.version>4.0.0-M1</assertj.version>
+    <commons-compress.version>1.28.0</commons-compress.version>
+    <errorprone.version>2.44.0</errorprone.version>
+    <immutables.version>2.11.7</immutables.version>
+    <javax-annotation.version>1.3.2</javax-annotation.version>
+    <jspecify.version>1.0.0</jspecify.version>
+    <json.version>20250517</json.version>
+    <jsonassert.version>2.0-rc1</jsonassert.version>
+    <junit.version>6.0.0</junit.version>
+    <maven-core.version>3.9.11</maven-core.version>
+    <maven-plugin-annotations.version>3.15.2</maven-plugin-annotations.version>
+    <maven-plugin-api.version>3.9.11</maven-plugin-api.version>
+    <!-- GH-772: must be kept on v1 for Maven 3.9.x -->
+    <maven-resolver-api.version>1.9.24</maven-resolver-api.version>
+    <memoryfilesystem.version>2.8.2</memoryfilesystem.version>
+    <mockito.version>5.20.0</mockito.version>
+    <nullaway.version>0.12.12</nullaway.version>
+    <protobuf.version>4.33.1</protobuf.version>
+    <slf4j.version>2.0.17</slf4j.version>
+    <wiremock.version>3.13.2</wiremock.version>
+
+    <!-- Plugins -->
+    <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
+    <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+    <license-maven-plugin.version>5.0.0</license-maven-plugin.version>
+    <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
+    <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
+    <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
+    <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+    <maven-dependency-plugin.version>3.9.0</maven-dependency-plugin.version>
+    <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
+    <maven-install-plugin.version>3.1.4</maven-install-plugin.version>
+    <maven-invoker-plugin.version>3.9.1</maven-invoker-plugin.version>
+    <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
+    <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
+    <maven-jxr-plugin.version>3.6.0</maven-jxr-plugin.version>
+    <maven-plugin-plugin.version>3.15.2</maven-plugin-plugin.version>
+    <maven-plugin-report-plugin.version>3.15.2</maven-plugin-report-plugin.version>
+    <maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version>
+    <maven-release-plugin.version>3.2.0</maven-release-plugin.version>
+    <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+    <maven-site-plugin.version>3.21.0</maven-site-plugin.version>
+    <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+    <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
+    <!-- Must be on v9 or newer to correctly generate indexes for Java 17 builds -->
+    <sisu-maven-plugin.version>0.9.0.M4</sisu-maven-plugin.version>
+
+    <!-- Plugin dependencies -->
+    <checkstyle.version>12.0.1</checkstyle.version>
+    <maven-fluido-skin.version>2.1.0</maven-fluido-skin.version>
+    <maven-surefire-junit5-tree-reporter.version>1.5.1</maven-surefire-junit5-tree-reporter.version>
+
+    <!--
+        - Force bytebuddy experimental support for some exotic platforms.
+        - Enable debug logs for our code for diagnostics.
+        - Enable the loading of dynamic agents to remove warnings about ByteBuddy loading
+          itself at runtime which now are raised as of Java 22.
+    -->
+    <argLine>
+      -XX:+CrashOnOutOfMemoryError
+      -XX:+TieredCompilation
+      -XX:TieredStopAtLevel=1
+      -Xshare:off
+      -Dnet.bytebuddy.experimental=true
+      -Dorg.slf4j.simpleLogger.log.io.github.ascopes=DEBUG
+      -XX:+EnableDynamicAgentLoading
+      -Xms64m
+      -Xmx512m
+    </argLine>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.github.marschall</groupId>
+        <artifactId>memoryfilesystem</artifactId>
+        <version>${memoryfilesystem.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.protobuf</groupId>
+        <artifactId>protobuf-bom</artifactId>
+        <version>${protobuf.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.annotation</groupId>
+        <artifactId>javax.annotation-api</artifactId>
+        <version>${javax-annotation.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-compress</artifactId>
+        <version>${commons-compress.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-core</artifactId>
+        <version>${maven-core.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-plugin-api</artifactId>
+        <version>${maven-plugin-api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.maven.plugin-tools</groupId>
+        <artifactId>maven-plugin-annotations</artifactId>
+        <version>${maven-plugin-annotations.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.maven.resolver</groupId>
+        <artifactId>maven-resolver-api</artifactId>
+        <version>${maven-resolver-api.version}</version>
+      </dependency>
+
+      <dependency>
+        <!--
+            This is a bit of a hack: we do not technically depend
+            on this in any project, but we reference it in our
+            site.xml that is consumed by Maven Site Plugin. Usually
+            we'd declare the version in there directly, but by doing
+            it here with a property, we cal allow dependabot to
+            start to manage this automatically for us. The property
+            is then filtered into the site.xml automatically.
+        -->
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>${maven-fluido-skin.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${assertj.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.immutables</groupId>
+        <artifactId>bom</artifactId>
+        <version>${immutables.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+
+      <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>${json.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.jspecify</groupId>
+        <artifactId>jspecify</artifactId>
+        <version>${jspecify.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${junit.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-bom</artifactId>
+        <version>${mockito.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+
+      <dependency>
+        <groupId>org.skyscreamer</groupId>
+        <artifactId>jsonassert</artifactId>
+        <version>${jsonassert.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-bom</artifactId>
+        <version>${slf4j.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+
+      <dependency>
+        <groupId>org.wiremock</groupId>
+        <artifactId>wiremock</artifactId>
+        <version>${wiremock.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <!-- Management for optional plugins. -->
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <!-- Enforces our license header and allows adding it automatically to code. -->
+          <groupId>com.mycila</groupId>
+          <artifactId>license-maven-plugin</artifactId>
+          <version>${license-maven-plugin.version}</version>
+
+          <configuration>
+            <!-- Useful flags: https://mycila.carbou.me/license-maven-plugin/ -->
+            <aggregate>true</aggregate>
+            <licenseSets>
+              <licenseSet>
+                <header>.mvn/license/license-header.txt</header>
+                <includes>
+                  <include>**/src/**/*.groovy</include>
+                  <include>**/src/**/*.java</include>
+                  <include>**/src/**/*.js</include>
+                  <include>**/src/**/*.kt</include>
+                  <include>**/src/**/*.properties</include>
+                  <include>**/src/**/*.proto</include>
+                  <include>**/src/**/*.scala</include>
+                  <include>**/*.xml</include>
+                </includes>
+                <excludes>
+                  <exclude>.mvn/checkstyle/checkstyle.xml</exclude>
+                </excludes>
+              </licenseSet>
+            </licenseSets>
+            <mapping>
+              <java>SLASHSTAR_STYLE</java>
+            </mapping>
+            <properties>
+              <currentYear>2025</currentYear>
+              <inceptionYear>${project.inceptionYear}</inceptionYear>
+            </properties>
+            <strictCheck>true</strictCheck>
+          </configuration>
+
+          <executions>
+            <execution>
+              <id>validate-license-headers</id>
+              <phase>validate</phase>
+              <goals>
+                <goal>check</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <!-- Used for integration testing to create ZIP archives. -->
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>${maven-assembly-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven-clean-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <!-- Checking style of code matches the Google code style. -->
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${maven-checkstyle-plugin.version}</version>
+
+          <configuration>
+            <configLocation>.mvn/checkstyle/checkstyle.xml</configLocation>
+            <consoleOutput>true</consoleOutput>
+            <failsOnError>true</failsOnError>
+            <includeResources>true</includeResources>
+            <sourceDirectories>${project.basedir}/src</sourceDirectories>
+            <suppressionsLocation>.mvn/checkstyle/suppressions.xml</suppressionsLocation>
+            <violationSeverity>info</violationSeverity>
+          </configuration>
+
+          <executions>
+            <execution>
+              <id>check-code-style</id>
+              <phase>validate</phase>
+              <goals>
+                <goal>check</goal>
+              </goals>
+            </execution>
+          </executions>
+
+          <dependencies>
+            <dependency>
+              <!-- Force the usage of checkstyle v10 rather than v8.28 -->
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <version>${checkstyle.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+
+        <plugin>
+          <!-- Java compiler config. -->
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
+
+          <configuration>
+            <annotationProcessorPaths combine.children="append">
+              <annotationProcessorPath>
+                <groupId>org.immutables</groupId>
+                <artifactId>value-processor</artifactId>
+                <version>${immutables.version}</version>
+              </annotationProcessorPath>
+            </annotationProcessorPaths>
+            <compilerArgs combine.children="append">
+              <compilerArg>-Xlint:all,-classfile,-processing,-requires-automatic,-serial</compilerArg>
+            </compilerArgs>
+            <failOnWarning>true</failOnWarning>
+            <parameters>true</parameters>
+            <proc>full</proc>
+            <showDeprecation>true</showDeprecation>
+            <release>17</release>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <!-- Used for Mockito agent support in JDK21+. We have to know the JAR path of the dependency. -->
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>${maven-dependency-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>${maven-gpg-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${maven-install-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <!-- Runs integration tests. -->
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-invoker-plugin</artifactId>
+          <version>${maven-invoker-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <!-- Add additional entries to the JAR's MANIFEST.MF. -->
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven-jar-plugin.version}</version>
+
+          <configuration>
+            <archive>
+              <index>true</index>
+              <manifest>
+                <addBuildEnvironmentEntries>true</addBuildEnvironmentEntries>
+                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                <addExtensions>true</addExtensions>
+              </manifest>
+              <manifestEntries>
+                <Sealed>true</Sealed>
+              </manifestEntries>
+            </archive>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <!-- Generate plugin descriptors. -->
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-plugin-plugin</artifactId>
+          <version>${maven-plugin-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <!-- Create site info pages. -->
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>${maven-project-info-reports-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <!-- Deployments and version incrementing. -->
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven-release-plugin.version}</version>
+          <configuration>
+            <!-- Don't test when making the tag, as we've already tested
+                 by this point. -->
+            <arguments>-Dmaven.test.skip -Dinvoker.skip</arguments>
+            <goals>deploy</goals>
+            <releaseProfiles>release</releaseProfiles>
+            <preparationGoals>clean verify</preparationGoals>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven-resources-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <!-- Generate the plugin site. -->
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${maven-site-plugin.version}</version>
+
+          <configuration>
+            <generateSitemap>true</generateSitemap>
+            <!-- Fixes links pointing to the wrong place. -->
+            <relativizeSiteLinks>false</relativizeSiteLinks>
+            <!-- Strict validation. -->
+            <validate>true</validate>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <!-- Bundles project sources into an additional JAR for release. -->
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${maven-source-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <!-- Unit testing. -->
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven-surefire-plugin.version}</version>
+
+          <configuration>
+            <consoleOutputReporter>
+              <disable>true</disable>
+            </consoleOutputReporter>
+            <!--
+              This block is needed to show @DisplayName and @ParameterizedTest
+              in reports with the provided names.
+            -->
+            <statelessTestsetReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
+              <disable>false</disable>
+              <version>3.0</version>
+              <usePhrasedFileName>false</usePhrasedFileName>
+              <usePhrasedTestSuiteClassName>true</usePhrasedTestSuiteClassName>
+              <usePhrasedTestCaseClassName>true</usePhrasedTestCaseClassName>
+              <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
+            </statelessTestsetReporter>
+            <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporter">
+              <disable>false</disable>
+              <printStacktraceOnError>true</printStacktraceOnError>
+              <printStacktraceOnFailure>true</printStacktraceOnFailure>
+              <usePhrasedFileName>false</usePhrasedFileName>
+              <usePhrasedClassNameInRunning>true</usePhrasedClassNameInRunning>
+              <usePhrasedClassNameInTestCaseSummary>true</usePhrasedClassNameInTestCaseSummary>
+            </statelessTestsetInfoReporter>
+          </configuration>
+
+          <dependencies>
+            <dependency>
+              <groupId>me.fabriciorby</groupId>
+              <artifactId>maven-surefire-junit5-tree-reporter</artifactId>
+              <version>${maven-surefire-junit5-tree-reporter.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+
+        <plugin>
+          <!-- Generates JSR-330 CDI configuration data to enable using dependency injection. -->
+          <groupId>org.eclipse.sisu</groupId>
+          <artifactId>sisu-maven-plugin</artifactId>
+          <version>${sisu-maven-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>generate-index</id>
+              <goals>
+                <goal>main-index</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <!-- Code coverage. -->
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>${jacoco-maven-plugin.version}</version>
+
+          <executions>
+            <execution>
+              <id>prepare-coverage-agent-surefire</id>
+              <phase>initialize</phase>
+              <goals>
+                <goal>prepare-agent</goal>
+              </goals>
+            </execution>
+
+            <execution>
+              <id>prepare-coverage-agent-invoker</id>
+              <phase>initialize</phase>
+              <goals>
+                <goal>prepare-agent-integration</goal>
+              </goals>
+              <configuration>
+                <!-- Append to ensure multiple invoker test calls are included. -->
+                <append>true</append>
+                <!-- Ensure `${invoker.mavenOpts}` is set in the invoker.properties as well
+                    if maven.argLine is overridden. -->
+                <includes>io.github.ascopes.protobufmavenplugin.*</includes>
+                <propertyName>invoker.mavenOpts</propertyName>
+              </configuration>
+            </execution>
+
+            <execution>
+              <id>generate-coverage-reports</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>report</goal>
+                <goal>report-integration</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <!-- This is an aggregate so only needs to be applied once. -->
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <inherited>false</inherited>
+      </plugin>
+
+      <plugin>
+        <!-- This has no option for aggregation but derived projects must specify the
+            relativePath attribute so that locations of the checkstyle config file resolve
+            correctly from the parent in ITs -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+
+        <executions>
+          <execution>
+            <!-- Add details about JAR paths to project properties.
+                This is needed for things like Mockito where we have to
+                explicitly enable the JVM agent at runtime in Java 24. -->
+            <id>inject-project-properties</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>properties</goal>
+            </goals>
+          </execution>
+
+          <execution>
+            <!-- Fail the build if exclusions exist and are invalid. -->
+            <id>fail-on-invalid-exclusions</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>analyze-exclusions</goal>
+            </goals>
+            <configuration>
+              <exclusionFail>true</exclusionFail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <!--
+            Intercepts the default deploy phase and replaces it with goals that
+            handle pushing to Sonatype Nexus (Maven Central's registry backend)
+            and then triggering a "closure" operation that will promote it to
+            the public Maven repository.
+        -->
+        <groupId>org.sonatype.central</groupId>
+        <artifactId>central-publishing-maven-plugin</artifactId>
+        <version>${central-publishing-maven-plugin.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <autoPublish>true</autoPublish>
+          <publishingServerId>central</publishingServerId>
+          <!--
+               The central publishing plugin has an eventual consistency bug
+               here where the API may give a 404 for a short time before reporting
+               the publication as in progress. This crashes the plugin and erroneously
+               forces a revert to occur when it is not needed. For now, just hope
+               that the publication succeeds at some point instead of waiting for it.
+          -->
+          <!-- <waitUntil>published</waitUntil> -->
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <!-- Generate source documentation listings. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven-javadoc-plugin.version}</version>
+        <configuration>
+          <doclint>all,-missing</doclint>
+          <show>protected</show>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>javadoc-no-fork</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+
+      <plugin>
+        <!-- Used to generate source code cross-references with other reporting plugins. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>${maven-jxr-plugin.version}</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>jxr-no-fork</report>
+              <report>test-jxr-no-fork</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+
+      <plugin>
+        <!-- Compile src/main/site and generate the goals site pages. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-report-plugin</artifactId>
+        <version>${maven-plugin-report-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <!-- Generate the base project reports for the site. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${maven-project-info-reports-plugin.version}</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>ci-management</report>
+              <report>index</report>
+              <report>issue-management</report>
+              <report>licenses</report>
+              <report>scm</report>
+              <report>summary</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          
+          <plugin>
+            <!-- GPG signing of build artifacts, required by Maven
+                Central. We only enable this via a profile so that
+                forks do not have to register GPG keys to be able
+                to build. -->
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+                <configuration>
+                  <gpgArguments>
+                    <arg>--pinentry-mode</arg>
+                    <arg>loopback</arg>
+                  </gpgArguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

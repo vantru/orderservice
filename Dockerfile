@@ -1,0 +1,26 @@
+# Sử dụng image Maven dựa trên nền Linux
+FROM maven:3.9.11-eclipse-temurin-17 AS build
+WORKDIR /app
+
+# Copy file cấu hình trước
+COPY pom.xml .
+#RUN --mount=type=bind,source=.m2-cache,target=/root/.m2 mvn dependency:go-offline -
+COPY src ./src
+RUN --mount=type=bind,source=.m2-cache,target=/root/.m2 mvn package -DskipTests -o
+# Stage 2: Run the application
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+
+#set timezone
+# ENV TZ=UTC
+# ENV JAVA_TOOL_OPTIONS="-Duser.timezone=UTC"
+
+# Copy file jar đã build thành công từ stage trước
+COPY --from=build /app/target/*.jar app.jar
+
+# Expose spring boot default port
+EXPOSE 8080
+
+
+# Execute the application
+ENTRYPOINT ["java", "-Duser.timezone=UTC","-jar", "app.jar"]

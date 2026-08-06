@@ -1,0 +1,4 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Fri Jul 10 20:58:51 ICT 2026
+@default-central-https\://repo.maven.apache.org/maven2/.lastUpdated=1783691931420
+https\://repo.maven.apache.org/maven2/.error=Could not transfer artifact io.axoniq\:axonserver-connector-java\:pom\:4.4.7 from/to central (https\://repo.maven.apache.org/maven2)\: There is not enough space on the disk

@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2023 - 2025, Ashley Scopes.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.github.ascopes</groupId>
+    <artifactId>protobuf-maven-plugin-parent</artifactId>
+    <version>4.0.3</version>
+  </parent>
+
+  <artifactId>protobuf-maven-plugin</artifactId>
+  <name>Protobuf Maven Plugin</name>
+  <description>Generates compilable sources from Protobuf definitions.</description>
+  <packaging>maven-plugin</packaging>
+
+  <prerequisites>
+    <!-- Versions before 3.9.6 cannot handle Java 17 bytecode in Eclipse Sisu. -->
+    <maven>3.9.6</maven>
+  </prerequisites>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <scope>compile</scope>
+    </dependency>
+  
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-compress</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <!-- Provided by Maven at runtime -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <!-- Provided by Maven at runtime -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.maven.resolver</groupId>
+      <artifactId>maven-resolver-api</artifactId>
+      <!-- Provided by Maven at runtime -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <!-- Provided by Maven at runtime -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.immutables</groupId>
+      <artifactId>value</artifactId>
+      <!-- Annotation processor only -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <!-- Used for the incremental cache file format. -->
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jspecify</groupId>
+      <artifactId>jspecify</artifactId>
+      <!-- Annotations only -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <!-- Provided by Maven at runtime, so don't bundle it. -->
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>com.github.marschall</groupId>
+      <artifactId>memoryfilesystem</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.skyscreamer</groupId>
+      <artifactId>jsonassert</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!--suppress VulnerableLibrariesLocal -->
+    <dependency>
+      <groupId>org.wiremock</groupId>
+      <artifactId>wiremock</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <!-- Used for Mockito agent support in JDK21+. We have to know the JAR path of the dependency. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <!-- Runs integration tests. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-invoker-plugin</artifactId>
+
+        <configuration>
+          <addTestClassPath>true</addTestClassPath>
+          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+          <failIfNoProjects>true</failIfNoProjects>
+          <!-- Warning: placing this inside the cloneProjectsTo path triggers a resolution bug in the plugin -->
+          <localRepositoryPath>${project.basedir}/target/it-repo</localRepositoryPath>
+          <!--<parallelThreads>2C</parallelThreads>-->
+          <!-- Parallel disabled due to spurious Aether issues -->
+          <parallelThreads>1</parallelThreads>
+          <postBuildHookScript>test</postBuildHookScript>
+          <properties>
+            <!-- Acquire locks whereever we run Maven to avoid parallel tests trampling across eachother. -->
+            <aether.syncContext.named.factory>file-lock</aether.syncContext.named.factory>
+            <aether.syncContext.named.nameMapper>file-gav</aether.syncContext.named.nameMapper>
+            <!-- Avoid https://bugs.openjdk.org/browse/JDK-8252883 on Windows -->
+            <aether.named.file-lock.attempts>10</aether.named.file-lock.attempts>
+            <aether.named.file-lock.sleepMillis>500</aether.named.file-lock.sleepMillis>
+          </properties>
+          <setupIncludes>
+            <setupInclude>setup</setupInclude>
+          </setupIncludes>
+          <settingsFile>${project.basedir}/src/it/settings.xml</settingsFile>
+          <showErrors>true</showErrors>
+          <streamLogs>false</streamLogs>
+          <streamLogsOnFailures>true</streamLogsOnFailures>
+          <writeJunitReport>true</writeJunitReport>
+        </configuration>
+
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>install</goal>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <!-- Add additional entries to the JAR's MANIFEST.MF. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <!-- Generate plugin descriptors. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+
+        <executions>
+          <execution>
+            <!-- We already generate the main descriptor by default.
+                The help mojo is then generated for us by this
+                custom execution. -->
+            <id>generate-help-mojo</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>helpmojo</goal>
+            </goals>
+            <configuration>
+              <helpPackageName>io.github.ascopes.protobufmavenplugin.mojo</helpPackageName>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <!-- Generate the plugin site. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <!-- Bundles project sources into an additional JAR for release. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <!-- Unit testing. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+
+        <configuration>
+          <!-- 
+              Needed in Java 24 as the dynamic agent attachment mechanism
+              is deprecated, so we have to attach Mockito expliciyly.
+          -->
+          <argLine>@{argLine} -javaagent:${org.mockito:mockito-core:jar}</argLine>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <!-- Generates JSR-330 CDI configuration data to enable using dependency injection. -->
+        <groupId>org.eclipse.sisu</groupId>
+        <artifactId>sisu-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <!-- Code coverage. -->
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+
+        <configuration>
+          <excludes>
+            <!-- Exclude the generated Help Mojo. -->
+            <exclude>**/*HelpMojo.*</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <!-- Enabling this profile will enable the Java debugger socket and pause
+           execution of test projects until a remote debugger is attached. -->
+      <id>invoker-debug</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-invoker-plugin</artifactId>
+              <version>${maven-invoker-plugin.version}</version>
+              <configuration>
+                <invokerPropertiesFile>invoker-debug.properties</invokerPropertiesFile>
+                <!-- The remote debugger deadlocks if we don't set this! -->
+                <parallelThreads>1</parallelThreads>
+                <!-- Disable object locking that we enabled elsewhere. -->
+                <properties />
+                <streamLogs>true</streamLogs>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+
+    <profile>
+      <!-- Enabling this profile will force all tests to run using the
+           protoc binary that is on the system path. -->
+      <id>invoker-path-protoc</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-invoker-plugin</artifactId>
+              <configuration>
+                <invokerPropertiesFile>invoker-path-protoc.properties</invokerPropertiesFile>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+
+    <profile>
+      <!-- Attempt to use a shorter path name for tests on Windows so that we do not get
+           failures from hitting path length limits. -->
+      <id>invoker-windows-workaround</id>
+      <activation>
+        <os>
+          <family>windows</family>
+        </os>
+      </activation>
+
+      <properties>
+        <invoker-project-path-override>${java.io.tmpdir}/pmp-it</invoker-project-path-override>
+      </properties>
+      
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-clean-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>clean-windows-invoker-path</id>
+                <phase>clean</phase>
+                <goals>
+                  <goal>clean</goal>
+                </goals>
+                <configuration>
+                  <filesets>
+                    <fileset>
+                      <directory>${invoker-project-path-override}</directory>
+                      <useDefaultExcludes>false</useDefaultExcludes>
+                    </fileset>
+                  </filesets>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <configuration>
+              <cloneProjectsTo>${invoker-project-path-override}</cloneProjectsTo>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <!-- ErrorProne only works with Java 21 and newer. If we're on Java 17, we cannot
+           enable it within the compiler. This is somewhat unfortunate but should be okay
+           as a workaround for now since we build on multiple JDKs on GitHub. -->
+      <id>errorprone</id>
+      <activation>
+        <jdk>[21,)</jdk>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+
+            <configuration>
+              <annotationProcessorPaths>
+                <annotationProcessorPath>
+                  <groupId>com.google.errorprone</groupId>
+                  <artifactId>error_prone_core</artifactId>
+                  <version>${errorprone.version}</version>
+                </annotationProcessorPath>
+                <annotationProcessorPath>
+                  <!-- Override what Maven is pulling in. This is fine during compilation as our
+                       code doesn't use Guava at all. This is needed for ErrorProne to not crash
+                       on startup. -->
+                  <groupId>com.google.guava</groupId>
+                  <artifactId>guava</artifactId>
+                  <version>[33,)</version>
+                </annotationProcessorPath>
+                <annotationProcessorPath>
+                  <groupId>com.uber.nullaway</groupId>
+                  <artifactId>nullaway</artifactId>
+                  <version>${nullaway.version}</version>
+                </annotationProcessorPath>
+              </annotationProcessorPaths>
+
+              <compilerArgs>
+                <compilerArg>--should-stop=ifError=FLOW</compilerArg>
+                <compilerArg>
+                  -Xplugin:ErrorProne
+                  -XepDisableWarningsInGeneratedCode
+                  -XepExcludedPaths:.*/target/generated.*?/.*
+                  -XepOpt:NullAway:AnnotatedPackages=io.github.ascopes.protobufmavenplugin
+                  <!-- See https://github.com/uber/NullAway/issues/1319 -->
+                  -XepOpt:NullAway:ExcludedFieldAnnotations=org.apache.maven.plugins.annotations.Parameter,org.junit.jupiter.*,org.mockito.*
+                </compilerArg>
+                <compilerArg>-XDcompilePolicy=simple</compilerArg>
+              </compilerArgs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

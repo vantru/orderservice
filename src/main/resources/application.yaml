@@ -1,0 +1,108 @@
+server:
+  port: 8082
+
+grpc:
+  client:
+    user-service:
+      address: static://localhost:6565
+      negotiationType: plaintext
+
+axon:
+  axonserver:
+    enabled: true
+    component-name: order-service
+    servers: ${AXONSERVER_URL}
+
+  # serializer:
+  #   events: jackson
+  #   messages: jackson
+  #   general: jackson
+
+  # kafka:
+  #   bootstrap-servers:
+  #   - localhost:9092
+  #   client-id: order-service
+  #   default-topic: order-events
+  #   publisher:
+  #     confirmation-mode: transactional
+
+  #   producer:
+  #     transaction-id-prefix: order-tx
+  #     event-processor-mode: subscribing
+
+  #   consumer:
+  #     group-id: order-group
+  #     auto-offset-reset: earliest
+  #     event-processor-mode: tracking
+
+  axoniq:
+    platform:
+      credentials: d67ef6ae-0:bf2aff3b33014c3485a06ee9815ca67f
+#     application-name: my-spring-boot-service
+#     # Format: ENVIRONMENT_ID:ACCESS_TOKEN
+#     credentials: "d67ef6ae-0:bf2aff3b33014c3485a06ee9815ca67f"
+
+  # eventhandling:
+  #   processors:
+  #     order-group:
+  #       mode: subscribing
+      
+
+spring:
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+  application:
+    name: ordersservice
+  # datasource:
+  #   url: jdbc:h2:file:~/orders;AUTO_SERVER=true
+  #   username: root
+  #   password: sergey
+  #   driver-class-name: org.h2.Driver
+  # jpa:
+  #   database-platform: org.hibernate.dialect.H2Dialect
+  #   hibernate:
+  #     ddl-auto: update
+  # h2:
+  #   console:
+  #     enabled: true
+  #     settings:
+  #       web-allow-others: true
+
+  datasource:
+    #url: jdbc:postgresql://localhost:5432/orderdb
+    url: ${DATABASE_URL}/orderdb
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      # optional:
+      properties:
+        hibernate:
+          jdbc:
+            time_zone: UTC
+    show-sql: true
+
+    properties:
+      hibernate:
+        format_sql: true
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true # Forces readiness and liveness to activate
+
+# logging:
+#   level:
+#     org.axonframework: DEBUG
+#     io.axoniq.axonserver: DEBUG
+#     org.axonframework.axonserver.connector.event.axon.AxonServerEventStore: DEBUG
