@@ -80,7 +80,10 @@ jobs:
       - build
       - scan
     runs-on: ubuntu-latest
+     
     steps:
+      - name: checkout
+        uses: actions/checkout@v4
       - name: install yq
         uses: mikefarah/yq@v4.44.3
       - name: Update Kubernetes manifest
