@@ -23,7 +23,7 @@ jobs:
       - name: Render settings.xml
         env:
           GH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
-        run: envsubst < ci/settings.xml.template > settings.xml
+        run: envsubst < .github/ci/settings.xml.template > settings.xml
 
       - name: Validate XML
         run: |
