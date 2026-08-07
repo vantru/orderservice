@@ -20,6 +20,19 @@ jobs:
         uses: actions/checkout@v4
       - name: set short sha
         run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+      - name: Render settings.xml
+        env:
+          GH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+        run: envsubst < ci/settings.xml.template > settings.xml
+
+      - name: Validate XML
+        run: |
+          sudo apt-get install -y libxml2-utils
+          xmllint --noout settings.xml
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: docker login
         uses: docker/login-action@v3
         with:
@@ -30,9 +43,12 @@ jobs:
         with:
           context: .
           secrets: |
-            maven_settings=${{ secrets.MAVEN_SETTINGS }}
+            maven_settings=settings.xml
           push: false
           tags: hardingtrutran/ordersservice:${{ env.SHORT_SHA }}
+      - name: Clean up rendered secret file
+        if: always()
+        run: rm -f settings.xml
       - name: trivy image scans
         uses: aquasecurity/trivy-action@v0.36.0
         with:
