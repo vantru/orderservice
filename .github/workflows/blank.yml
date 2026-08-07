@@ -102,6 +102,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions@noreply"
-          git add k8s/ordersservice-pod.yml
+          git add k8s/orderservice-pod.yml
           git commit -m "change tag sha"
           git push origin main
