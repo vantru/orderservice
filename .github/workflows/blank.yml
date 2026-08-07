@@ -95,7 +95,7 @@ jobs:
         uses: mikefarah/yq@v4.44.3
       - name: Update Kubernetes manifest
         run: |
-          FILE=k8s/ordersservice-pod.yml
+          FILE=./k8s/ordersservice-pod.yml
           yq -i '.spec.template.spec.containers[0].image = "hardingtrutran/ordersservice:${{ needs.build.outputs.short_sha }}"' "$FILE"
           cat "$FILE"
       - name: commit deployment ordersservice file change
