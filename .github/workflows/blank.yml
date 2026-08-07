@@ -53,10 +53,15 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
           secrets: |
             maven_settings=settings.xml
           push: true
           tags: hardingtrutran/ordersservice:${{ steps.vars.outputs.short_sha }}
+
       - name: Clean up rendered secret file
         if: always()
         run: rm -f settings.xml
@@ -78,9 +83,9 @@ jobs:
     steps:
       - name: install yq
         uses: mikefarah/yq@v4.44.3
-      - name: update ordersservice-pod.yml with docker tags
+      - name: Update Kubernetes manifest
         run: |
-          yd -i '.spec.containers[0].image = "hardingtrutran/ordersservice:${{ needs.build.outputs.short_sha }}"'
+          yq -i '.spec.containers[0].image = "hardingtrutran/ordersservice:${{ needs.build.outputs.short_sha }}"' k8s/ordersservice-pod.yml
       - name: commit deployment ordersservice file change
         run: |
           git config user.name "github-actions[bot]"
