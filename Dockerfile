@@ -6,7 +6,11 @@ WORKDIR /app
 COPY pom.xml .
 #RUN --mount=type=bind,source=.m2-cache,target=/root/.m2 mvn dependency:go-offline -
 COPY src ./src
-RUN --mount=type=bind,source=.m2-cache,target=/root/.m2 mvn package -DskipTests -o
+#copy file library by github package
+#COPY settings.xml /root/.m2/settings.xml
+
+#RUN --mount=type=bind,source=.m2-cache,target=/root/.m2 mvn package -DskipTests -o
+RUN mvn package -DskipTests
 # Stage 2: Run the application
 FROM eclipse-temurin:17-jre
 WORKDIR /app

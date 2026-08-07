@@ -32,6 +32,12 @@
 		<axon.kafka.version>4.9.0</axon.kafka.version>
 		<axon.version>4.10.3</axon.version>
 	</properties>
+	<repositories>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/vantru/core</url>
+        </repository>
+    </repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
