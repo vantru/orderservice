@@ -85,7 +85,7 @@ jobs:
         uses: mikefarah/yq@v4.44.3
       - name: Update Kubernetes manifest
         run: |
-          yq -i '.spec.template.spec.containers[0].image = "hardingtrutran/ordersservice:${{ needs.build.outputs.short_sha }}"' k8s/ordersservice-pod.yml
+          yq -i '.spec.template.spec.containers[0].image = "hardingtrutran/ordersservice:${{ needs.build.outputs.short_sha }}"' k8s/orderservice-pod.yml
       - name: commit deployment ordersservice file change
         run: |
           git config user.name "github-actions[bot]"
