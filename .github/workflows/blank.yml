@@ -21,7 +21,7 @@ jobs:
       - name: Code Checkout
         uses: actions/checkout@v4
       - name: set short sha
-        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
       - name: Render settings.xml
         env:
           GH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
