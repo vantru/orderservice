@@ -84,6 +84,11 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
+      - name: list repository file
+        run: |
+          pwd
+          ls -la
+          find . -type f
       - name: install yq
         uses: mikefarah/yq@v4.44.3
       - name: Update Kubernetes manifest
