@@ -15,11 +15,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    outputs:
+      short_sha: ${{ steps.vars.outputs.short_sha }}
+
     steps:
       - name: Code Checkout
         uses: actions/checkout@v4
       - name: set short sha
-        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+        run: echo "short_sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
       - name: Render settings.xml
         env:
           GH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
@@ -45,7 +49,7 @@ jobs:
           secrets: |
             maven_settings=settings.xml
           push: false
-          tags: hardingtrutran/ordersservice:${{ env.SHORT_SHA }}
+          tags: hardingtrutran/ordersservice:${{ env.short_sha }}
       - name: Clean up rendered secret file
         if: always()
         run: rm -f settings.xml
@@ -56,7 +60,7 @@ jobs:
       - name: trivy image scans
         uses: aquasecurity/trivy-action@v0.36.0
         with:
-          image-ref: hardingtrutran/ordersservice:${{ needs.build.env.SHORT_SHA }}
+          image-ref: hardingtrutran/ordersservice:${{ needs.build.outputs.short_sha }}
           severity: CRITICAL,HIGH
           exit-code: 1
   push-to-dockerhub:
@@ -68,7 +72,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: hardingtrutran/ordersservice:${{ needs.build.env.SHORT_SHA }}
+          tags: hardingtrutran/ordersservice:${{ needs.build.outputs.short_sha }}
       - name: install yq
         uses: mikefarah/yq@v4.44.3
       - name: update ordersservice-pod.yml with docker tags
