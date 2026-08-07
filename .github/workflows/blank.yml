@@ -28,7 +28,9 @@ jobs:
       - name: docker build image to Docker Hub
         uses: docker/build-push-action@v6
         with:
-          context: ../ordersservice
+          context: .
+          secrets: |
+            maven_settings=${{ secrets.MAVEN_SETTINGS }}
           push: false
           tags: hardingtrutran/ordersservice:${{ env.SHORT_SHA }}
       - name: trivy image scans
@@ -40,7 +42,7 @@ jobs:
       - name: docker push image to docker Hub
         uses: docker/build-push-action@v6
         with:
-          context: ../ordersservice
+          context: .
           push: true
           tags: hardingtrutran/ordersservice:${{ env.SHORT_SHA }}
       - name: install yq
