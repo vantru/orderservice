@@ -84,11 +84,13 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - name: list repository file
+      - name: Debug workspace
         run: |
+          echo "Workspace: $GITHUB_WORKSPACE"
           pwd
           ls -la
-          find . -type f
+          ls -la k8s || true
+          find . -maxdepth 3 -type f
       - name: install yq
         uses: mikefarah/yq@v4.44.3
       - name: Update Kubernetes manifest
