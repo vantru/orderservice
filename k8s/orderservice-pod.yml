@@ -46,6 +46,7 @@ spec:
             successThreshold: 1
           ports:
             - containerPort: 8082
+            
           envFrom:
             - configMapRef:
                 name: postgres-cm
