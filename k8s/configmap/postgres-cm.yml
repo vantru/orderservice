@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-cm
+data:
+  # property-like keys; each key maps to a simple value
+  DATABASE_URL: "jdbc:postgresql://host.minikube.internal:5432"
+  DATABASE_USERNAME: postgres

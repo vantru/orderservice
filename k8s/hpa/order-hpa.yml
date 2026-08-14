@@ -1,0 +1,25 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: order-hpa
+  namespace: default            # Change to your application's namespace
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ordersservice       # MUST match the exact name of your Deployment
+  minReplicas: 2                # Minimum number of pods to keep running
+  maxReplicas: 10               # Maximum number of pods allowed during high load
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70  # Scales up if average CPU usage exceeds 70%
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80  # Scales up if average Memory usage exceeds 80%

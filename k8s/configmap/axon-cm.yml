@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: axon-cm
+data:
+  # property-like keys; each key maps to a simple value
+  AXONSERVER_URL: "host.minikube.internal:8124"

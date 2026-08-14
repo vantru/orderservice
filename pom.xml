@@ -32,6 +32,7 @@
 		<axon.kafka.version>4.9.0</axon.kafka.version>
 		<axon.version>4.10.3</axon.version>
 	</properties>
+	<!-- github package -->
 	<repositories>
         <repository>
             <id>github</id>
