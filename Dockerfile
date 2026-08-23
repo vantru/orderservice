@@ -13,7 +13,7 @@ COPY src ./src
 RUN mvn package -DskipTests
 # syntax=docker/dockerfile:1.7
 
-# RUN --mount=type=secret,id=maven_settings,target=/root/.m2/settings.xml \
+#RUN --mount=type=secret,id=maven_settings,target=/root/.m2/settings.xml \
 #     mvn clean package -DskipTests
 # Stage 2: Run the application
 FROM eclipse-temurin:17-jre

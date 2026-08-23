@@ -29,21 +29,21 @@ spec:
             limits:
               memory: "1Gi"
               cpu: "1000m"
-          readinessProbe:
-            httpGet:
-              path: /actuator/health/readiness
-              port: 8080
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          livenessProbe:
-            httpGet:
-              path: /actuator/health/liveness
-              port: 8080
-            initialDelaySeconds: 30 # give the JVM/Spring context time to boot before checking
-            periodSeconds: 10
-            timeoutSeconds: 3
-            failureThreshold: 3 # 3 consecutive failures = pod killed and restarted
-            successThreshold: 1
+          # readinessProbe:
+          #   httpGet:
+          #     path: /actuator/health/readiness
+          #     port: 8080
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 5
+          # livenessProbe:
+          #   httpGet:
+          #     path: /actuator/health/liveness
+          #     port: 8080
+          #   initialDelaySeconds: 30 # give the JVM/Spring context time to boot before checking
+          #   periodSeconds: 10
+          #   timeoutSeconds: 3
+          #   failureThreshold: 3 # 3 consecutive failures = pod killed and restarted
+          #   successThreshold: 1
           ports:
             - containerPort: 8082
             
