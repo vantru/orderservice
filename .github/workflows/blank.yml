@@ -1,83 +1,24 @@
 
-name: CI
+name: Java CI with Maven
 
 on:
-  
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
 permissions:
   contents: write
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    outputs:
-      short_sha: ${{ steps.vars.outputs.short_sha }}
-
-    steps:
-      - name: Code Checkout
-        uses: actions/checkout@v4
-      - name: set short sha
-        id: vars
-        shell: bash
-        run: echo "short_sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
-      - name: Verify output
-        run: |
-          echo "SHORT=${{ steps.vars.outputs.short_sha }}"
-      - name: Render settings.xml
-        env:
-          GH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
-        run: envsubst < .github/ci/settings.xml.template > settings.xml
-
-      - name: Validate XML
-        run: |
-          sudo apt-get install -y libxml2-utils
-          xmllint --noout settings.xml
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: docker login
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME}}
-          password: ${{ secrets.DOCKER_PASSWORD}}
-      - name: docker build image to Docker Hub
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-          secret-files: |
-            maven_settings=settings.xml
-          push: true
-          tags: hardingtrutran/ordersservice:${{ steps.vars.outputs.short_sha }}
-
-      - name: Clean up rendered secret file
-        if: always()
-        run: rm -f settings.xml
-  # scan:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: trivy image scans
-  #       uses: aquasecurity/trivy-action@v0.36.0
-  #       with:
-  #         image-ref: hardingtrutran/ordersservice:${{ needs.build.outputs.short_sha }}
-  #         severity: CRITICAL,HIGH
-          # exit-code: 1
+  call-build:
+    uses: vantru/shared-workflows/.github/workflows/docker-build.yml@main
+    with:
+      image_name: userservice
+      context: .
+    secrets: inherit
   update-k8s:
     needs:
-      - build
+      - call-build
       # - scan
     runs-on: ubuntu-latest
      
