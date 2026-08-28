@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: ordersservice
-          image: hardingtrutran/ordersservice:546c572
+          image: hardingtrutran/ordersservice:96a9253
           resources:
             requests:
               memory: "512Mi"
@@ -46,7 +46,6 @@ spec:
           #   successThreshold: 1
           ports:
             - containerPort: 8082
-            
           envFrom:
             - configMapRef:
                 name: postgres-cm
