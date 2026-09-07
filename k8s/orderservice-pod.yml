@@ -60,7 +60,6 @@ spec:
                   name: postgres-secret
                   key: DATABASE_PASSWORD
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -69,5 +68,9 @@ spec:
   selector:
     app: ordersservice
   ports:
-  - port: 80
-    targetPort: 8082
+    - port: 80
+      targetPort: 8082
+  template:
+    spec:
+      containers:
+        - image: 'hardingtrutran/ordersservice:'
