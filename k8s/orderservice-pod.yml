@@ -32,13 +32,13 @@ spec:
           # readinessProbe:
           #   httpGet:
           #     path: /actuator/health/readiness
-          #     port: 8080
+          #     port: 8082
           #   initialDelaySeconds: 10
           #   periodSeconds: 5
           # livenessProbe:
           #   httpGet:
           #     path: /actuator/health/liveness
-          #     port: 8080
+          #     port: 8082
           #   initialDelaySeconds: 30 # give the JVM/Spring context time to boot before checking
           #   periodSeconds: 10
           #   timeoutSeconds: 3
@@ -52,8 +52,22 @@ spec:
             - configMapRef:
                 name: axon-cm
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: staging
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
                   key: DATABASE_PASSWORD
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ordersservice-svc
+spec:
+  selector:
+    app: ordersservice
+  ports:
+  - port: 80
+    targetPort: 8082
