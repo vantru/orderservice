@@ -13,7 +13,7 @@ jobs:
   call-build:
     uses: vantru/shared-workflows/.github/workflows/docker-build.yml@main
     with:
-      image_name: userservice
+      image_name: ordersservice
       context: .
     secrets: inherit
   update-k8s:
@@ -37,7 +37,7 @@ jobs:
       - name: Update Kubernetes manifest
         run: |
           FILE=./k8s/orderservice-pod.yml
-          yq -i '.spec.template.spec.containers[0].image = "hardingtrutran/ordersservice:${{ needs.build.outputs.short_sha }}"' "$FILE"
+          yq -i '.spec.template.spec.containers[0].image = "hardingtrutran/ordersservice:${{ needs.build-build.outputs.short_sha }}"' "$FILE"
           cat "$FILE"
       - name: commit deployment ordersservice file change
         run: |
