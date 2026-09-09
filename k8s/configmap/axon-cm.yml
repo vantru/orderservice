@@ -4,4 +4,4 @@ metadata:
   name: axon-cm
 data:
   # property-like keys; each key maps to a simple value
-  AXONSERVER_URL: "host.minikube.internal:8124"
+  AXONSERVER_URL: "axonserver.axon.svc.cluster.local:8124"

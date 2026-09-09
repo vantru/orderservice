@@ -5,7 +5,7 @@ metadata:
   labels:
     app: ordersservice
 spec:
-  replicas: 3
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -70,7 +70,3 @@ spec:
   ports:
     - port: 80
       targetPort: 8082
-  template:
-    spec:
-      containers:
-        - image: 'hardingtrutran/ordersservice:78871e4'
