@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: ordersservice
-          image: 'hardingtrutran/ordersservice:063856d'
+          image: 'hardingtrutran/ordersservice:bdadf2b'
           resources:
             requests:
               memory: "512Mi"
